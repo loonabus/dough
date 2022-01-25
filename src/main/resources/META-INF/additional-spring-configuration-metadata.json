@@ -1,0 +1,249 @@
+{
+	"properties": [
+		{
+			"name": "base.aws-ses.mode",
+			"type": "java.lang.String",
+			"description": "Description for base.aws-ses.mode."
+		},
+		{
+			"name": "base.aws-ses.access",
+			"type": "java.lang.String",
+			"description": "Description for base.aws-ses.access."
+		},
+		{
+			"name": "base.aws-ses.secret",
+			"type": "java.lang.String",
+			"description": "Description for base.aws-ses.secret."
+		},
+		{
+			"name": "base.aws-ses.region",
+			"type": "com.amazonaws.regions.Regions",
+			"description": "Description for base.aws-ses.region."
+		},
+		{
+			"name": "base.aws-ses.sender",
+			"type": "java.lang.String",
+			"description": "Description for base.aws-ses.sender."
+		},
+		{
+			"name": "base.aws-sts.mode",
+			"type": "java.lang.String",
+			"description": "Description for base.aws-sts.mode."
+		},
+		{
+			"name": "base.aws-sts.access",
+			"type": "java.lang.String",
+			"description": "Description for base.aws-sts.access."
+		},
+		{
+			"name": "base.aws-sts.secret",
+			"type": "java.lang.String",
+			"description": "Description for base.aws-sts.secret."
+		},
+		{
+			"name": "base.aws-sts.region",
+			"type": "com.amazonaws.regions.Regions",
+			"description": "Description for base.aws-sts.region."
+		},
+		{
+			"name": "base.async.name-prefix",
+			"type": "java.lang.String",
+			"description": "Description for base.async.name-prefix."
+		},
+		{
+			"name": "base.async.pool-min-size",
+			"type": "java.lang.Integer",
+			"description": "Description for base.async.pool-min-size."
+		},
+		{
+			"name": "base.async.pool-max-size",
+			"type": "java.lang.Integer",
+			"description": "Description for base.async.pool-max-size."
+		},
+		{
+			"name": "base.async.pool-queue-size",
+			"type": "java.lang.Integer",
+			"description": "Description for base.async.pool-queue-size."
+		},
+		{
+			"name": "base.async.reject-rule",
+			"type": "java.lang.String",
+			"description": "Description for base.async.reject-rule."
+		},
+		{
+			"name": "base.async.keep-alive",
+			"type": "java.time.Duration",
+			"description": "Description for base.async.keep-alive."
+		},
+		{
+			"name": "base.jackson.date-format",
+			"type": "java.lang.String",
+			"description": "Description for base.jackson.date-format."
+		},
+		{
+			"name": "base.jackson.fixed-zone-id",
+			"type": "java.time.ZoneId",
+			"description": "Description for base.jackson.fixed-zone-id."
+		},
+		{
+			"name": "base.redis.base-prefix",
+			"type": "java.lang.String",
+			"description": "Description for base.redis.base-prefix."
+		},
+		{
+			"name": "base.redis.test-prefix",
+			"type": "java.lang.String",
+			"description": "Description for base.redis.test-prefix."
+		},
+		{
+			"name": "base.redis.operation-key",
+			"type": "java.lang.String",
+			"description": "Description for base.redis.operation-key."
+		},
+		{
+			"name": "base.redis.operation-expired-after",
+			"type": "java.lang.Long",
+			"description": "Description for base.redis.operation-expired-after."
+		},
+		{
+			"name": "base.redis.operation-time-unit",
+			"type": "java.util.concurrent.TimeUnit",
+			"description": "Description for base.redis.operation-time-unit."
+		},
+		{
+			"name": "base.redis-config.enabled",
+			"type": "java.lang.Boolean",
+			"description": "Description for base.redis-config.enabled."
+		},
+		{
+			"name": "base.redis-config.options",
+			"type": "java.lang.String",
+			"description": "Description for base.redis-config.options."
+		},
+		{
+			"name": "base.redis-config.base-message",
+			"type": "java.lang.String",
+			"description": "Description for base.redis-config.base-message."
+		},
+		{
+			"name": "base.redis-config.base-pattern",
+			"type": "java.lang.String",
+			"description": "Description for base.redis-config.base-pattern."
+		},
+		{
+			"name": "base.scheduled.name-prefix",
+			"type": "java.lang.String",
+			"description": "Description for base.scheduled.name-prefix."
+		},
+		{
+			"name": "base.scheduled.pool-min-size",
+			"type": "java.lang.Integer",
+			"description": "Description for base.scheduled.pool-min-size."
+		},
+		{
+			"name": "base.scheduled.reject-rule",
+			"type": "java.lang.String",
+			"description": "Description for base.scheduled.reject-rule."
+		},
+		{
+			"name": "base.swagger-enabled",
+			"type": "java.lang.Boolean",
+			"description": "Description for base.swagger-enabled."
+		},
+		{
+			"name": "base.param-filter-enabled",
+			"type": "java.lang.Boolean",
+			"description": "Description for base.param-filter-enabled."
+		},
+		{
+			"name": "base.kafka.bootstrap-servers",
+			"type": "java.lang.String",
+			"description": "Description for base.kafka.bootstrap-servers."
+		},
+		{
+			"name": "base.kafka.name-prefix",
+			"type": "java.lang.String",
+			"description": "Description for base.kafka.name-prefix."
+		},
+		{
+			"name": "base.kafka.topics",
+			"type": "java.lang.String",
+			"description": "Description for base.kafka.topics."
+		},
+		{
+			"name": "base.kafka.send-topics",
+			"type": "java.lang.String",
+			"description": "Description for base.kafka.send-topics."
+		},
+		{
+			"name": "base.kafka-streams.source-topics",
+			"type": "java.lang.String",
+			"description": "Description for base.kafka-streams.source-topics."
+		},
+		{
+			"name": "base.kafka-streams.block-thresholds",
+			"type": "java.lang.Integer",
+			"description": "Description for base.kafka-streams.block-thresholds."
+		},
+		{
+			"name": "base.kafka-streams.window-size",
+			"type": "java.time.Duration",
+			"description": "Description for base.kafka-streams.window-size."
+		},
+		{
+			"name": "base.kafka-streams.window-retention",
+			"type": "java.time.Duration",
+			"description": "Description for base.kafka-streams.window-retention."
+		},
+		{
+			"name": "base.kafka-streams.state-store-name",
+			"type": "java.lang.String",
+			"description": "Description for base.kafka-streams.state-store-name."
+		},
+		{
+			"name": "base.kafka-streams.config.app-id",
+			"type": "java.lang.String",
+			"description": "Description for base.kafka-streams.config.app-id."
+		},
+		{
+			"name": "base.kafka-streams.config.bootstrap-servers",
+			"type": "java.lang.String",
+			"description": "Description for base.kafka-streams.config.bootstrap-servers."
+		},
+		{
+			"name": "base.kafka-streams.config.client-id",
+			"type": "java.lang.String",
+			"description": "Description for base.kafka-streams.config.client-id."
+		},
+		{
+			"name": "base.kafka-streams.config.replication-factor",
+			"type": "java.lang.Integer",
+			"description": "Description for base.kafka-streams.config.replication-factor."
+		},
+		{
+			"name": "base.kafka-streams.config.state-dir",
+			"type": "java.lang.String",
+			"description": "Description for base.kafka-streams.config.state-dir."
+		},
+		{
+			"name": "base.kafka-streams.config.replicas-for-task",
+			"type": "java.lang.Integer",
+			"description": "Description for base.kafka-streams.config.replicas-for-task."
+		},
+		{
+			"name": "base.kafka-streams.config.concurrent-stream-threads",
+			"type": "java.lang.Integer",
+			"description": "Description for base.kafka-streams.config.concurrent-stream-threads."
+		},
+		{
+			"name": "base.logging.feign-level",
+			"type": "java.lang.String",
+			"description": "Description for base.logging.feign-level."
+		},
+		{
+			"name": "base.logging.param-logging-enabled",
+			"type": "java.lang.String",
+			"description": "Description for base.logging.param-logging-enabled."
+		}
+	]
+}

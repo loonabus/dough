@@ -1,0 +1,3 @@
+INSERT INTO USER (USER_NAME) VALUES ('SuperAdminUser');
+
+COMMIT;

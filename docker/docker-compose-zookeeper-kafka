@@ -1,0 +1,44 @@
+version: "3.7"
+
+services:
+  zookeeper:
+    image: wurstmeister/zookeeper
+    container_name: zookeeper-server
+    expose:
+      - 2181
+    ports:
+      - "2181:2181"
+    networks:
+      kafka-zookeeper-net:
+        aliases:
+          - zookeeper-server-01
+  kafka:
+    image: wurstmeister/kafka:2.11-2.0.0
+    container_name: kafka-server
+    depends_on:
+      - zookeeper
+    expose:
+      - 9092
+    ports:
+      - "9092:9092"
+    networks:
+      kafka-zookeeper-net:
+        aliases:
+          - kafka-server-01
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ADVERTISED_HOST_NAME: 127.0.0.1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+      KAFKA_ADVERTISED_PORT: 9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://127.0.0.1:9092
+      KAFKA_CREATE_TOPICS: "my-kafka-test-topic:1:1,my-kafka-test-send-topic:1:1"
+    volumes:
+      - docker-sock:/var/run/docker.sock
+
+networks:
+  kafka-zookeeper-net:
+    driver: bridge
+
+volumes:
+  docker-sock:

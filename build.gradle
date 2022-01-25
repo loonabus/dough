@@ -1,0 +1,196 @@
+import org.codehaus.groovy.runtime.GStringImpl
+
+buildscript {
+	ext {
+		coverageFile = 'coverageReport'
+		coveragePath = "${buildDir}/coverages" as GStringImpl
+
+		bootVer = '2.5.9'
+		cloudVer = '2020.0.5'
+		springPrefix = 'org.springframework'
+		packagePrefix = "${springPrefix}.boot:spring-boot" as GStringImpl
+	}
+}
+
+plugins {
+	id 'java'
+	id 'idea'
+	id 'groovy'
+	id 'jacoco'
+	id 'org.sonarqube' version '3.3'
+	id 'com.google.cloud.tools.jib' version '3.2.0'
+	id 'org.springframework.boot' version "${bootVer}"
+}
+
+repositories {
+	mavenCentral()
+	gradlePluginPortal()
+}
+
+group = 'bus.loona'
+version = '0.0.1'
+description = 'Spring Boot 2.x Template'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+sourceSets {
+	main {
+		java.srcDirs = []
+		groovy.srcDirs = ['src/main/java']
+		resources.srcDirs = ['src/main/resources']
+	}
+	test {
+		java.srcDirs = []
+		groovy.srcDirs = ['src/test/java']
+		resources.srcDirs = ['src/test/resources']
+	}
+}
+
+configurations.all { c ->
+	c.exclude([group: 'log4j'])
+	c.exclude([group: 'commons-logging'])
+	c.resolutionStrategy { rs -> rs.preferProjectModules() }
+}
+
+dependencies {
+	implementation platform("${packagePrefix}-dependencies:${bootVer}")
+	implementation platform("${springPrefix}.cloud:spring-cloud-dependencies:${cloudVer}")
+
+	implementation "${packagePrefix}-starter-actuator"
+	implementation "${packagePrefix}-starter-aop"
+	implementation "${packagePrefix}-starter-cache"
+	implementation "${packagePrefix}-starter-data-redis"
+	implementation "${packagePrefix}-starter-jdbc"
+	implementation "${packagePrefix}-starter-mail"
+	implementation "${packagePrefix}-starter-security"
+	implementation "${packagePrefix}-starter-validation"
+	implementation "${packagePrefix}-starter-web"
+
+	implementation 'org.apache.kafka:kafka-clients:2.8.0'
+	implementation 'org.apache.kafka:kafka-streams:2.8.0'
+	implementation "${springPrefix}.kafka:spring-kafka:2.7.6"
+
+	implementation "${springPrefix}.cloud:spring-cloud-starter-openfeign"
+
+	implementation 'org.mariadb.jdbc:mariadb-java-client:2.7.4'
+	implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
+	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.0'
+
+	implementation 'com.h2database:h2:1.4.200'
+	implementation('it.ozimov:embedded-redis:0.7.3') { exclude group: 'org.slf4j', module: 'slf4j-simple' }
+
+	implementation 'com.amazonaws:aws-java-sdk-ses:1.12.75'
+	implementation 'com.amazonaws:aws-java-sdk-sts:1.12.75'
+
+	implementation 'org.jsoup:jsoup:1.14.2'
+	implementation 'com.navercorp.lucy:lucy-xss-servlet:2.0.1'
+
+	implementation 'org.codehaus.janino:janino:3.1.6'
+	implementation 'org.owasp:security-logging-logback:1.1.6'
+
+	implementation 'org.codehaus.groovy:groovy:3.0.8'
+	implementation 'com.google.guava:guava:31.0.1-jre'
+	implementation 'org.apache.commons:commons-pool2:2.11.1'
+	implementation 'com.github.ben-manes.caffeine:caffeine:2.9.2'
+
+	implementation 'io.springfox:springfox-boot-starter:3.0.0'
+
+	implementation 'io.prometheus.jmx:jmx_prometheus_javaagent:0.16.1'
+	implementation 'io.micrometer:micrometer-registry-prometheus:1.7.4'
+
+	testImplementation "${packagePrefix}-starter-test"
+
+	testImplementation 'org.assertj:assertj-core:3.21.0'
+	testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
+	testImplementation 'org.mockito:mockito-core:3.12.4'
+	testImplementation 'org.mockito:mockito-junit-jupiter:4.2.0'
+	testImplementation 'com.github.fppt:jedis-mock:0.1.23'
+	testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:2.2.0'
+
+	compileOnly 'org.projectlombok:lombok:1.18.22'
+	implementation 'org.mapstruct:mapstruct:1.4.2.Final'
+	compileOnly 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+
+	annotationProcessor 'org.projectlombok:lombok:1.18.20'
+	annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
+	annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+
+	annotationProcessor "${packagePrefix}-configuration-processor:${bootVer}"
+}
+
+compileGroovy {
+	inputs.files(processResources)
+	options.compilerArgs.add('-parameters')
+	options.compilerArgs.add('-Amapstruct.defaultComponentModel=spring')
+	options.compilerArgs.add('-Amapstruct.suppressGeneratorTimestamp=true')
+	groovyOptions.javaAnnotationProcessing = true
+}
+
+project.getTasks().register('cpExtraFiles', Copy) { c ->
+	c.from("${projectDir}/exec", "${projectDir}/exporter")
+	c.into("${buildDir}/libs")
+}
+
+jar {
+	enabled = false
+}
+compileJava {
+	enabled = false
+}
+compileTestJava {
+	enabled = false
+}
+
+bootJar {
+	dependsOn(cpExtraFiles)
+	archiveFileName = "${rootProject.name}.jar"
+}
+
+wrapper {
+	gradleVersion = '7.2'
+}
+
+jacoco {
+	toolVersion = '0.8.7'
+	reportsDirectory.set(file(coveragePath))
+}
+
+jacocoTestReport {
+	dependsOn test
+	reports {
+		xml.required = true
+		csv.required = html.required = false
+		xml.outputLocation = file("${coveragePath}/report/${coverageFile}.xml")
+	}
+}
+
+test {
+	useJUnitPlatform()
+	maxParallelForks(3)
+	finalizedBy(jacocoTestReport)
+
+	reports.html.required = reports.junitXml.required = true
+
+	jacoco {
+		destinationFile = file("${coveragePath}/${coverageFile}.exec")
+	}
+}
+
+sonarqube {
+	properties {
+		property 'sonar.exclusions', 'src/main/java/bus/loona/common/constraints/*Check.java'
+		property 'sonar.coverage.jacoco.xmlReportPaths', "${coveragePath}/report/${coverageFile}.xml"
+	}
+}
+
+jib {
+	allowInsecureRegistries = true
+	container.mainClass = 'bus.loona.ApplicationMain'
+	extraDirectories.paths = ["${projectDir}/exporter"]
+	to {
+		image = '127.0.0.1:8080/bus/loona:0.0.1'
+		auth { username = 'admin'; password = '1' }
+	}
+	container.jvmFlags = ['-Dfile.encoding=UTF-8', '-Dspring.profiles.active=logger,server'] // , '-javaagent:/jmx_prometheus_javaagent-0.16.1.jar=9210:/exporter-config-embedded-tomcat.yml']
+}
