@@ -8,8 +8,10 @@ import bus.loona.service.RedisService;
 import bus.loona.service.UserService;
 import bus.loona.view.TestHtmlView;
 import com.google.common.collect.ImmutableMap;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.enums.ParameterStyle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -35,27 +37,27 @@ public class TestController {
 	}
 
 	@GetMapping("/test/view")
-	@ApiOperation(value="Get html view")
+	@Operation(description="Get html view")
 	public ModelAndView retrieveView(@ModelAttribute @Valid final ServiceReq.ViewReq req) {
 		return new ModelAndView(view, ImmutableMap.of("code", req.getShortCode()));
 	}
 
 	@PostMapping("/test/redis")
-	@ApiOperation(value="put & search value")
+	@Operation(description="put & search value")
 	public BaseRes<ServiceRes.Res, Void> createValue(@RequestBody @Valid final ServiceReq.RedisReq req) {
 		return BaseRes.success(redisService.create(ServiceReq.from(req)));
 	}
 
 	@GetMapping(value="/user")
-	@ApiOperation(value="search users")
-	@ApiImplicitParam(name="Authorization", required=true, paramType="header", dataTypeClass=String.class)
+	@Operation(description="search users")
+	@Parameter(name="Authorization", required=true, in=ParameterIn.HEADER, style= ParameterStyle.SIMPLE)
 	public BaseRes<List<User>, Void> searchUser() {
 		return BaseRes.success(userService.search());
 	}
 
 	@PostMapping(value="/user")
-	@ApiOperation(value="create & retrieve user")
-	@ApiImplicitParam(name="Authorization", required=true, paramType="header", dataTypeClass=String.class)
+	@Operation(description="create & retrieve user")
+	@Parameter(name="Authorization", required=true, in=ParameterIn.HEADER, style= ParameterStyle.SIMPLE)
 	public BaseRes<User, Void> createUser(@RequestBody @Valid final ServiceReq.UserReq req) {
 		return BaseRes.success(userService.create(ServiceReq.from(req)));
 	}

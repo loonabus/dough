@@ -20,7 +20,6 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.google.common.base.CaseFormat;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
 import com.navercorp.lucy.security.xss.servletfilter.XssEscapeServletFilter;
 import com.nhncorp.lucy.security.xss.XssPreventer;
 import feign.Logger;
@@ -36,6 +35,7 @@ import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springdoc.core.GroupedOpenApi;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,10 +87,6 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 import org.springframework.web.servlet.mvc.method.annotation.ServletRequestDataBinderFactory;
 import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spring.web.plugins.Docket;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -354,11 +350,9 @@ public class BaseConfig {
 	protected static class SwaggerConfig {
 
 		@Bean
-		public Docket docket() {
-			return new Docket(DocumentationType.SWAGGER_2)
-					.produces(ImmutableSet.of(MediaType.APPLICATION_JSON_VALUE))
-					.select().paths(PathSelectors.any())
-					.apis(RequestHandlerSelectors.basePackage(Constants.BASE_PACKAGE + ".web")).build();
+		public GroupedOpenApi createGroupedOpenApi() {
+			return GroupedOpenApi.builder().group("public").pathsToMatch("/**")
+					.producesToMatch(MediaType.APPLICATION_JSON_VALUE).packagesToScan(Constants.BASE_PACKAGE + ".web").build();
 		}
 	}
 
