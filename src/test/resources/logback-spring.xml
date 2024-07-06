@@ -16,34 +16,10 @@
 		</encoder>
 	</appender>
 
-	<logger name="com.loona" level="DEBUG" />
+	<logger name="io.doe" level="DEBUG" />
 	<logger name="ParamLoggingAspect" level="DEBUG" />
 
-	<logger name="jdbc.audit" level="OFF" />
-	<logger name="jdbc.connection" level="INFO" />
-	<logger name="jdbc.resultset" level="OFF" />
-	<logger name="jdbc.resultsettable" level="INFO" />
-	<logger name="jdbc.sqlonly" level="OFF" />
-	<logger name="jdbc.sqltiming" level="INFO" />
-
-	<logger name="net.sf.log4jdbc" level="WARN" />
-	<logger name="org.mybatis" level="WARN" />
-	<logger name="org.apache.ibatis" level="WARN" />
-	<logger name="com.loona.persistence" level="WARN" />
-
-	<logger name="ch.qos.logback" level="WARN" />
-	<logger name="com.fasterxml.jackson" level="WARN" />
-
-	<logger name="springfox" level="WARN" />
-	<logger name="io.swagger" level="WARN" />
-
-	<logger name="org.hibernate.validator" level="WARN" />
-
-	<logger name="org.springframework.beans" level="WARN" />
-	<logger name="org.springframework.jndi" level="WARN" />
-	<logger name="org.springframework.core.env" level="WARN" />
-
-	<root level="INFO">
+	<root level="DEBUG">
 		<appender-ref ref="CONSOLE_LOG" />
 	</root>
 </configuration>

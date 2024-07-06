@@ -1,0 +1,3 @@
+io.doe.config.JacksonConfig
+io.doe.config.MessageAccessorConfig
+io.doe.config.RedisTemplateConfig

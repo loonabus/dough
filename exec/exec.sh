@@ -2,12 +2,12 @@
 
 set -xe
 
-BASE_HOME=${TEST_HOME:-${HOME}}
+BASE_HOME=${APP_HOME:-${HOME}}
 LOGS_HOME=${BASE_HOME}/logs
 
-LOGGING_PROP=--logging.file.name=${LOGS_HOME}/loona
+LOGGING_PROP=--logging.file.name=${LOGS_HOME}/dough
 PROFILE_PROP=--spring.profiles.active=logger,server
-PID_FILE_PATH_PROP=--spring.pid.file=${BASE_HOME}/loona.pid
+PID_FILE_PATH_PROP=--spring.pid.file=${BASE_HOME}/dough.pid
 JAVA_AGENT_PROP=-javaagent:${BASE_HOME}/jmx_prometheus_javaagent-0.16.1.jar=9210:${BASE_HOME}/exporter-config-embedded-tomcat.yml
 
 JAVA_OPTS="${JAVA_OPTS} -ea -server"

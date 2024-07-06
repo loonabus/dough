@@ -1,10 +1,2 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-bus.loona.config.AutoConfig.MessageAutoConfig,\
-bus.loona.config.AutoConfig.ValidationAutoConfig,\
-bus.loona.config.AutoConfig.RedisTemplateAutoConfig,\
-bus.loona.config.AutoConfig.RedisListenerAutoConfig,\
-bus.loona.config.AutoConfig.KafkaAutoConfig,\
-bus.loona.config.AutoConfig.KafkaStreamsAutoConfig
-
 org.springframework.context.ApplicationListener=\
 org.springframework.boot.context.ApplicationPidFileWriter

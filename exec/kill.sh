@@ -2,4 +2,4 @@
 
 set -xe
 
-kill -15 $(cat ${TEST_HOME}/loona.pid)
+kill -15 $(cat ${APP_HOME}/loona.pid)

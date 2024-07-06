@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true" scanPeriod="30 seconds">
-	<shutdownHook class="ch.qos.logback.core.hook.DelayingShutdownHook">
+	<shutdownHook class="ch.qos.logback.core.hook.DefaultShutdownHook">
 		<delay>1500</delay>
 	</shutdownHook>
 
@@ -14,7 +14,7 @@
 	<property name="CONSOLE_PATTERN" value="%d %cyan(%-25.-25t) %highlight(%.-3p) %green(%-25.-25C{0}) %blue(%-25.-25c{0}) %yellow(%-25.-25M) %magenta(%4.4L) %msg %n" />
 
 	<appender name="CONSOLE_LOG" class="ch.qos.logback.core.ConsoleAppender">
-		<withJansi>true</withJansi>
+		<!-- withJansi>true</withJansi -->
 		<encoder>
 			<charset>utf8</charset>
 			<pattern>${CONSOLE_PATTERN}</pattern>
@@ -34,47 +34,20 @@
 		</rollingPolicy>
 	</appender>
 
-	<!--
-	<appender name="ASYNC_ROLLING_LOG" class="ch.qos.logback.classic.AsyncAppender">
-		<queueSize>2048</queueSize>
-		<discardingThreshold>0</discardingThreshold>
-		<appender-ref ref="ROLLING_LOG" />
-	</appender>
-	-->
-
-	<logger name="bus.loona" level="INFO" />
-	<logger name="ParamLoggingAspect" level="INFO" />
-
-	<logger name="jdbc.audit" level="OFF" />
-	<logger name="jdbc.connection" level="INFO" />
-	<logger name="jdbc.resultset" level="OFF" />
-	<logger name="jdbc.resultsettable" level="INFO" />
-	<logger name="jdbc.sqlonly" level="OFF" />
-	<logger name="jdbc.sqltiming" level="INFO" />
-
-	<logger name="net.sf.log4jdbc" level="WARN" />
-	<logger name="org.mybatis" level="WARN" />
-	<logger name="org.apache.ibatis" level="WARN" />
-	<logger name="com.loona.persistence" level="WARN" />
-
-	<logger name="ch.qos.logback" level="WARN" />
-	<logger name="com.fasterxml.jackson" level="WARN" />
-
-	<logger name="springfox" level="WARN" />
-	<logger name="io.swagger" level="WARN" />
-
-	<logger name="org.hibernate.validator" level="WARN" />
-
-	<logger name="org.springframework.beans" level="WARN" />
-	<logger name="org.springframework.jndi" level="WARN" />
-	<logger name="org.springframework.core.env" level="WARN" />
+	<logger name="io.doe" level="DEBUG" />
+	<logger name="HandlerArgumentsLoggingAspect" level="DEBUG" />
 
 	<springProperty scope="context" name="profiles" source="spring.profiles.active" />
 
-	<root level="INFO">
-		<if condition='p("profiles").replaceAll("kafka|logger|server|,", "").trim().equals("") || p("profiles").contains("local")'>
-			<then><appender-ref ref="CONSOLE_LOG" /></then>
-		</if>
+	<root level="DEBUG">
 		<appender-ref ref="ROLLING_LOG" />
 	</root>
+
+	<if condition='p("profiles").replaceAll("logger|server|,", "").trim().equals("") || p("profiles").contains("local")'>
+		<then>
+			<root>
+				<appender-ref ref="CONSOLE_LOG" />
+			</root>
+		</then>
+	</if>
 </configuration>
