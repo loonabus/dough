@@ -1,0 +1,63 @@
+	@Getter @Validated
+	@ConfigurationProperties(prefix="base.opensearch")
+	public static class OpenSearch {
+
+		@NotEmpty private final List<@URL String> endpoints;
+
+		public OpenSearch(final List<String> endpoints) {
+			this.endpoints = endpoints;
+		}
+
+		public List<OpenSearchHost> toOpenSearchHost() {
+			return endpoints.stream().map(e -> new OpenSearchHost(e.split(":"))).toList();
+		}
+	}
+
+	@Getter
+	public static class OpenSearchHost {
+
+		private final String scheme;
+		private final String address;
+		private final Integer port;
+
+		public OpenSearchHost(final String[] source) {
+			this.scheme = source[0]; this.address = source[1].replaceFirst("//", "");
+			this.port = source.length == 2 ? (Objects.equals("http", source[0]) ? 80 : 443) : Integer.parseInt(source[2]);
+		}
+	}
+
+
+	@Configuration
+	@EnableConfigurationProperties(BaseProperties.OpenSearch.class)
+	public static class OpenSearchConfig {
+
+		private final BaseProperties.OpenSearch props;
+
+		@Autowired
+		public OpenSearchConfig(final BaseProperties.OpenSearch props) {
+			this.props = props;
+		}
+
+		@Bean(destroyMethod="close")
+		public AsyncClientConnectionManager openSearchClientConnectionManager() {
+
+			return PoolingAsyncClientConnectionManagerBuilder.create()
+					.setMaxConnTotal(RestClientConfig.Options.POOL_MAX_CONNECTION_TOTAL.getValue())
+					.setMaxConnPerRoute(RestClientConfig.Options.POOL_MAX_CONNECTION_PER_ROUTE.getValue())
+					.setDefaultConnectionConfig(RestClientConfig.Configs.createConnectionConfig()).build();
+		}
+
+		@Bean
+		public OpenSearchTransport openSearchTransport(final Jackson2ObjectMapperBuilder builder, final AsyncClientConnectionManager manager) {
+
+			final HttpHost[] openSearchHosts = props.toOpenSearchHost().stream().map(h -> new HttpHost(h.getScheme(), h.getAddress(), h.getPort())).toArray(HttpHost[]::new);
+			final ApacheHttpClient5TransportBuilder.HttpClientConfigCallback cb = b -> b.evictExpiredConnections().setConnectionManager(manager).setDefaultRequestConfig(RestClientConfig.Configs.createRequestConfig());
+
+			return ApacheHttpClient5TransportBuilder.builder(openSearchHosts).setMapper(new JacksonJsonpMapper(builder.build())).setHttpClientConfigCallback(cb).build();
+		}
+
+		@Bean
+		public OpenSearchClient openSearchClient(final OpenSearchTransport transport) {
+			return new OpenSearchClient(transport);
+		}
+	}
